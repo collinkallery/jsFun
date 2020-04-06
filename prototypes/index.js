@@ -27,21 +27,28 @@ const kittyPrompts = {
 
     // Return an array of just the names of kitties who are orange e.g.
     // ['Tiger', 'Snickers']
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = kitties.filter(kitty => kitty.color === 'orange')
+  .map(kitty => kitty.name);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // The filter is used because we are working with a subset of
+    // the original array, that being the property of color. I then
+    // use the map prototype to create a new array of the same length
+    // just based on name.
   },
 
   sortByAge() {
     // Sort the kitties by their age
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = kitties.sort(function(a, b) {
+      return b.age - a.age;
+    })
     return result;
-
     // Annotation:
-    // Write your annotation here as a comment
+    // I used the sort prototype here based on the specific
+    // age property of each kitty, to order them from
+    // oldest to youngest.
   },
 
   growUp() {
@@ -58,7 +65,10 @@ const kittyPrompts = {
     // },
     // ...etc]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = kitties.map(kitty => {
+      kitty.age = kitty.age + 2;
+      return kitty;
+    });
     return result;
   }
 };
@@ -90,11 +100,24 @@ const clubPrompts = {
     //   ...etc
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+    const result = clubs.reduce((acc, club) => {
+  club.members.forEach(member => {
+    if (!acc[member]) {
+      acc[member] = []
+    }
+    acc[member].push(club.club)
+  })
+  return acc;
+}, {});
+return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Using a reduce here because we have received
+    // an array and we want an object back.
+    // A forEach then allows us to check if the current
+    // member in the iteration loop already exists
+    // if it does or doesn't, it pushes the club
+    // as a value to the key being the person's name.
   }
 };
 
@@ -126,7 +149,13 @@ const modPrompts = {
     //   { mod: 4, studentsPerInstructor: 8 }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = mods.map(specificMod => {
+  let obj = {
+    "mod": specificMod.mod,
+    "studentsPerInstructor": specificMod.students / specificMod.instructors
+  }
+  return obj;
+});
     return result;
 
     // Annotation:
@@ -161,7 +190,13 @@ const cakePrompts = {
     //    ..etc
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.map(cake => {
+  let obj = {
+    "flavor": cake.cakeFlavor,
+    "inStock": cake.inStock
+  }
+  return obj;
+})
     return result;
 
     // Annotation:
@@ -189,7 +224,7 @@ const cakePrompts = {
     // ..etc
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.filter(cake => cake.inStock > 0);
     return result;
 
     // Annotation:
@@ -200,11 +235,17 @@ const cakePrompts = {
     // Return the total amount of cakes in stock e.g.
     // 59
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.reduce((acc, cake) => {
+      acc += cake.inStock;
+      return acc;
+      }, 0)
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Since we have an array and are returning a nummber,
+    // reduce is the best option here. With each accumulation,
+    // I will add the current element's inStock value to
+    // the accumulator.
   },
 
   allToppings() {
@@ -265,7 +306,9 @@ const classPrompts = {
     //   { roomLetter: 'G', program: 'FE', capacity: 29 }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = classrooms.filter(room => {
+      return room.program === 'FE';
+    })
     return result;
 
     // Annotation:
@@ -279,10 +322,18 @@ const classPrompts = {
     //   feCapacity: 110,
     //   beCapacity: 96
     // }
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
+const result = classrooms.reduce((acc, program) => {
+  if (program.program === 'FE') {
+    acc['feCapacity'] = program.capacity + acc['feCapacity'];
+  } else {
+    acc['beCapacity'] = program.capacity + acc['beCapacity'];
+  }
+  return acc;
+}, {
+  'feCapacity': 0,
+  'beCapacity': 0
+});
+return result;
     // Annotation:
     // Write your annotation here as a comment
   },
@@ -290,7 +341,9 @@ const classPrompts = {
   sortByCapacity() {
     // Return the array of classrooms sorted by their capacity (least capacity to greatest)
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = classrooms.sort(function(a, b) {
+      return a.capacity - b.capacity;
+    });
     return result;
 
     // Annotation:
@@ -317,11 +370,16 @@ const bookPrompts = {
     //   'Catch-22', 'Treasure Island']
 
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = books.filter(book => {
+      return book.genre != 'True Crime' && book.genre != 'Horror';
+    }).map(book => book.title);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // I plan to use filter and map here. The first will filter
+    // to decide the books that aren't horror or true crime.
+    // The map will then create an array of all the book titles
+    // from the result of that filter.
 
   },
   getNewBooks() {
@@ -332,11 +390,17 @@ const bookPrompts = {
     //  { title: 'Life of Pi', year: 2001 },
     //  { title: 'The Curious Incident of the Dog in the Night-Time', year: 2003 }]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = books.filter(book => {
+      return book.published > 1989
+    }).map(book => {
+      return {'title': book.title, 'year': book.published}
+    });
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Here I will also use filter and map. The filter will find
+    // any of the books published after 1989, and the map will
+    // return the object version with the title and the year.
   }
 
 };
@@ -355,11 +419,14 @@ const weatherPrompts = {
     // return an array of all the average temperatures. Eg:
     // [ 40, 40, 44.5, 43.5, 57, 35, 65.5, 62, 14, 46.5 ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = weather.map(specificWeather => {
+      return (specificWeather.temperature.high + specificWeather.temperature.low) / 2
+    });
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Here I will just use a map to return an array of all of
+    // the average temperatures
   },
 
   findSunnySpots() {
@@ -369,11 +436,17 @@ const weatherPrompts = {
     // 'New Orleans, Louisiana is sunny.',
     // 'Raleigh, North Carolina is mostly sunny.' ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = weather.filter(specificWeather => {
+      return specificWeather.type.includes('sunny')
+    }).map(specificWeather => {
+      return `${specificWeather.location} is ${specificWeather.type}.`
+    });
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Here I will use filter and map. The filter will find
+    // all of the elements that include 'sunny' in their type
+    // and then map to return the sentence.
   },
 
   findHighestHumidity() {
@@ -385,7 +458,7 @@ const weatherPrompts = {
     //   temperature: { high: 49, low: 38 }
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = weather.sort((a, b) => b.humidity - a.humidity)[0];
     return result;
 
     // Annotation:
@@ -412,11 +485,19 @@ const nationalParksPrompts = {
     //   parksVisited: ["Rocky Mountain", "Acadia", "Zion"]
     //}
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = nationalParks.reduce((acc, park) => {
+      if (park.visited === false) {
+        acc['parksToVisit'].push(park.name);
+      } else {
+        acc['parksVisited'].push(park.name);
+      }
+      return acc;
+    }, {'parksToVisit': [], 'parksVisited': []})
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Here I will use reduce, because I received an array
+    // and want an object back with two new keys.
   },
 
   getParkInEachState() {
@@ -429,11 +510,17 @@ const nationalParksPrompts = {
     // { Florida: 'Everglades' } ]
 
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = nationalParks.reduce((acc, park) => {
+      acc.push({
+        [park.location]: park.name
+      })
+      return acc;
+    }, [])
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // I will use reduce here because I have recieved an array
+    // and I want an array back that has new, novel keys.
   },
 
   getParkActivities() {
@@ -452,11 +539,21 @@ const nationalParksPrompts = {
     //   'backpacking',
     //   'rock climbing' ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = nationalParks.reduce((acc, park) => {
+      park.activities.forEach(activity => {
+        if (!acc.includes(activity)) {
+          acc.push(activity)
+        }
+      })
+      return acc;
+    }, []);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Here I will use reduce because I've recieved an array
+    // and I want an array back that is not a subset of the
+    // original. If the activity doesn't already exist in the array,
+    // then push it to the acc.
   }
 };
 
@@ -479,11 +576,18 @@ const breweryPrompts = {
     // Return the total beer count of all beers for every brewery e.g.
     // 40
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = breweries.reduce((acc, brewery) => {
+      brewery.beers.forEach(beer => {
+        acc++
+      })
+      return acc;
+    }, 0)
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // The best option here is reduce because I have an array
+    // and want a single value back, that being a single number
+    // representing the total number of beers.
   },
 
   getBreweryBeerCount() {
@@ -495,11 +599,14 @@ const breweryPrompts = {
     // ...etc.
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = breweries.map(brewery => {
+      return {'name': brewery.name, 'beerCount': brewery.beers.length}
+    });
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Here I will use a map because I have recieved an array
+    // and I want an array of the same length back.
   },
 
   findHighestAbvBeer() {
@@ -507,11 +614,19 @@ const breweryPrompts = {
     // e.g.
     // { name: 'Barrel Aged Nature\'s Sweater', type: 'Barley Wine', abv: 10.9, ibu: 40 }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = breweries.reduce((acc, brewery) => {
+      brewery.beers.forEach(beer => {
+        acc.push(beer)
+      })
+      return acc;
+  }, []).sort((a, b) => b.abv - a.abv)[0];
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // This one is hard, but I think it'd be best to use
+    // a reduce. I want to reduce it to an array of every
+    // beer, and then sort them from highest to lowest
+    // based on ABV and return that one.
   }
 };
 
@@ -555,7 +670,17 @@ const turingPrompts = {
     //  { name: 'Robbie', studentCount: 18 }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = instructors.reduce((acc, instructor) => {
+      cohorts.forEach(cohort => {
+        if (cohort.module === instructor.module) {
+          acc.push({
+            'name': instructor.name,
+            'studentCount': cohort.studentCount
+          })
+        }
+      })
+      return acc;
+    }, []);
     return result;
 
     // Annotation:

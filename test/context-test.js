@@ -19,7 +19,7 @@ chai.use(function(e, t) {
 });
 
 describe("CONTEXT", () => {
-  it("exerciseA", () => {
+  it.only("exerciseA", () => {
     const e = "global window object" == context.exerciseA();
     expect(e).withMessage("Your result is not the correct context").to.be.true
   }), it("exerciseB", () => {
@@ -37,7 +37,7 @@ describe("CONTEXT", () => {
   }), it("exerciseF", () => {
     const e = "instance of Hero" == context.exerciseF();
     expect(e).withMessage("Your result is not the correct context").to.be.true
-  }), it("exerciseG", () => {
+  }), it.only("exerciseG", () => {
     const e = "global window object" == context.exerciseG();
     expect(e).withMessage("Your result is not the correct context").to.be.true
   }), it("exerciseH", () => {
